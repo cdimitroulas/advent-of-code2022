@@ -1,0 +1,53 @@
+name:                advent-of-code2022
+version:             0.1.0.0
+github:              "cdimitroulas/advent-of-code2022"
+license:             BSD3
+author:              "Christos Dimitroulas"
+maintainer:          "c.dimitroulas@gmail.com"
+copyright:           "2022 Christos Dimitroulas"
+
+data-files:
+  - data/*.*
+
+default-extensions:
+  - ApplicativeDo
+  - BangPatterns
+  - ConstraintKinds
+  - DataKinds
+  - DeriveFunctor
+  - DeriveGeneric
+  - DerivingStrategies
+  - FlexibleInstances
+  - GeneralizedNewtypeDeriving
+  - KindSignatures
+  - LambdaCase
+  - MultiParamTypeClasses
+  - RankNTypes
+  - RecordWildCards
+  - OverloadedStrings
+  - ScopedTypeVariables
+  - TypeApplications
+  - TypeOperators
+
+
+ghc-options:
+  - -Wall
+  - -Werror
+  - -Wcompat
+  - -Widentities
+  - -Wincomplete-uni-patterns
+  - -Wincomplete-record-updates
+  - -Wno-unused-top-binds
+  - -Wno-orphans
+
+extra-source-files:
+- README.md
+
+dependencies:
+- attoparsec >= 0.13
+- base >= 4.7 && < 5
+- containers
+- text
+
+library:
+  source-dirs: src
