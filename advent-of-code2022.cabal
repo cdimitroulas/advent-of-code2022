@@ -18,6 +18,7 @@ extra-source-files:
     README.md
 data-files:
     data/day1.txt
+    data/day2.txt
 
 source-repository head
   type: git
@@ -28,6 +29,7 @@ library
       Lib.Common
       Main
       Solutions.Day1.CalorieCounting
+      Solutions.Day2.RockPaperScissors
   other-modules:
       Paths_advent_of_code2022
   hs-source-dirs:
@@ -45,6 +47,7 @@ library
       KindSignatures
       LambdaCase
       MultiParamTypeClasses
+      NamedFieldPuns
       RankNTypes
       RecordWildCards
       OverloadedStrings

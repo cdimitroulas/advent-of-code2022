@@ -22,6 +22,7 @@ default-extensions:
   - KindSignatures
   - LambdaCase
   - MultiParamTypeClasses
+  - NamedFieldPuns
   - RankNTypes
   - RecordWildCards
   - OverloadedStrings

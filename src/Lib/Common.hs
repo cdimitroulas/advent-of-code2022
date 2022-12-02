@@ -1,4 +1,4 @@
-module Lib.Common (safeTake, splitList, solve) where
+module Lib.Common (safeTake, split, splitList, solve) where
 
 import           Data.Text    (Text)
 import qualified Data.Text    as T
