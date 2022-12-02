@@ -29,7 +29,9 @@ library
       Lib.Common
       Main
       Solutions.Day1.CalorieCounting
-      Solutions.Day2.RockPaperScissors
+      Solutions.Day2.Common
+      Solutions.Day2.Part1
+      Solutions.Day2.Part2
   other-modules:
       Paths_advent_of_code2022
   hs-source-dirs:
