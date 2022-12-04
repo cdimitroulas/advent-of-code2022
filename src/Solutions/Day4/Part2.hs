@@ -1,14 +1,12 @@
 module Solutions.Day4.Part2 where
 
+import           Data.List             (intersect)
 import           Lib.Common            (solve)
 import           Solutions.Day4.Common (Range, parseLines)
 
 rangesOverlap :: (Range, Range) -> Bool
 rangesOverlap ((xStart, xEnd), (yStart, yEnd)) =
-  (yStart `elem` xElems || yEnd `elem` xElems) || (xStart `elem` yElems || xEnd `elem` yElems)
-  where
-    xElems = [xStart..xEnd]
-    yElems = [yStart..yEnd]
+  not . null $ [xStart..xEnd] `intersect`  [yStart..yEnd]
 
 solution_2 :: IO ()
 solution_2 = do
