@@ -27,6 +27,7 @@ default-extensions:
   - RecordWildCards
   - OverloadedStrings
   - ScopedTypeVariables
+  - TupleSections
   - TypeApplications
   - TypeOperators
 

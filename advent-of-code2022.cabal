@@ -19,6 +19,7 @@ extra-source-files:
 data-files:
     data/day1.txt
     data/day2.txt
+    data/day3.txt
 
 source-repository head
   type: git
@@ -32,6 +33,9 @@ library
       Solutions.Day2.Common
       Solutions.Day2.Part1
       Solutions.Day2.Part2
+      Solutions.Day3.Common
+      Solutions.Day3.Part1
+      Solutions.Day3.Part2
   other-modules:
       Paths_advent_of_code2022
   hs-source-dirs:
@@ -54,6 +58,7 @@ library
       RecordWildCards
       OverloadedStrings
       ScopedTypeVariables
+      TupleSections
       TypeApplications
       TypeOperators
   ghc-options: -Wall -Werror -Wcompat -Widentities -Wincomplete-uni-patterns -Wincomplete-record-updates -Wno-unused-top-binds -Wno-orphans

@@ -1,5 +1,6 @@
-module Lib.Common (safeTake, split, splitList, solve) where
+module Lib.Common (safeTake, split, splitList, solve, uniq) where
 
+import qualified Data.Map     as Map
 import           Data.Text    (Text)
 import qualified Data.Text    as T
 import qualified Data.Text.IO as TIO
@@ -16,7 +17,7 @@ solve :: FilePath -- path to the input data
     -> ([Text] -> Maybe a) -- Parser
     -> (a -> b) -- Solver
     -> IO (Maybe b) -- Solution
-solve filepath parser solver = fmap solver . parser . T.lines <$> TIO.readFile filepath
+solve filepath parser solver = fmap solver . parser . filter (/= "") . T.lines <$> TIO.readFile filepath
 
 safeTake :: Int -> [a] -> Maybe [a]
 safeTake 0 _           = Just []
@@ -36,3 +37,6 @@ split f s = (left, right)
     (left, right') = break f s
     right = if null right' then [] else tail right'
 
+
+uniq :: Ord a => Eq a => [a] -> [a]
+uniq = map fst . Map.toList . Map.fromList . map (, Nothing)

@@ -24,6 +24,6 @@ strategyResult GameStrategy{..}
 solution_1 :: IO (Maybe Int)
 solution_1 = solve "data/day2.txt" parser (sum . map calcScore)
   where
-    parser = mapM parseGameStrategy . filter (/= "")
+    parser = mapM parseGameStrategy
     calcScore strategy@GameStrategy{..} =
       resultScore (strategyResult strategy) + choiceScore yourChoice
