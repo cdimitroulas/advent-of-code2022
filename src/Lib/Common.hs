@@ -1,9 +1,11 @@
-module Lib.Common (safeTake, split, splitList, solve, uniq) where
+module Lib.Common (safeTake, split, splitList, solve, uniq, parseMaybe, traverseBoth) where
 
-import qualified Data.Map     as Map
-import           Data.Text    (Text)
-import qualified Data.Text    as T
-import qualified Data.Text.IO as TIO
+import           Data.Attoparsec.Text (Parser)
+import qualified Data.Attoparsec.Text as P
+import qualified Data.Map             as Map
+import           Data.Text            (Text)
+import qualified Data.Text            as T
+import qualified Data.Text.IO         as TIO
 
 -- TODO: Come up with a generic "solver" function which reads a file, parses the input and then
 -- calculates the solution.
@@ -13,10 +15,10 @@ type Filepath = Text
 -- parseFileLines :: (String -> Maybe a) -> Filepath -> IO (Maybe [a])
 -- parseFileLines parse filepath = T.mapM parse . T.lines <$> readFile filepath
 
-solve :: FilePath -- path to the input data
-    -> ([Text] -> Maybe a) -- Parser
+solve :: Monad m => FilePath -- path to the input data
+    -> ([Text] -> m a) -- Parser
     -> (a -> b) -- Solver
-    -> IO (Maybe b) -- Solution
+    -> IO (m b) -- Solution
 solve filepath parser solver = fmap solver . parser . filter (/= "") . T.lines <$> TIO.readFile filepath
 
 safeTake :: Int -> [a] -> Maybe [a]
@@ -40,3 +42,9 @@ split f s = (left, right)
 
 uniq :: Ord a => Eq a => [a] -> [a]
 uniq = map fst . Map.toList . Map.fromList . map (, Nothing)
+
+parseMaybe :: Parser a -> Text -> Maybe a
+parseMaybe parser = P.maybeResult . P.parse parser
+
+traverseBoth :: Applicative f => (a -> f b) -> (a, a) -> f (b, b)
+traverseBoth f (x, y) = (,) <$> f x <*> f y
