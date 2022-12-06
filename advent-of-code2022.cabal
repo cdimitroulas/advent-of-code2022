@@ -23,6 +23,8 @@ data-files:
     data/day4.txt
     data/day5-example.txt
     data/day5.txt
+    data/day6-example.txt
+    data/day6.txt
 
 source-repository head
   type: git
@@ -45,6 +47,9 @@ library
       Solutions.Day5.Common
       Solutions.Day5.Part1
       Solutions.Day5.Part2
+      Solutions.Day6.Common
+      Solutions.Day6.Part1
+      Solutions.Day6.Part2
   other-modules:
       Paths_advent_of_code2022
   hs-source-dirs:
