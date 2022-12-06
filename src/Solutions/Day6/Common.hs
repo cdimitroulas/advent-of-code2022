@@ -1,12 +1,9 @@
 module Solutions.Day6.Common where
 
-import           Data.Foldable (foldl')
-import qualified Data.Map      as M
+import           Data.List (nub)
 
-isUniqueList :: (Eq a, Ord a) => [a] -> Bool
-isUniqueList list = null . M.filter (> (1 :: Integer)) $ charCounts
-  where
-    charCounts = foldl' (\total el -> M.insertWith (+) el 1 total) M.empty list
+isUniqueList :: Eq a => [a] -> Bool
+isUniqueList list = nub list == list
 
 -- returns a tuple containing the chars + the index of the last char
 findFirstNUniqueElems :: (Eq a, Ord a) => Int -> [a] -> Maybe ([a], Int)
