@@ -1,4 +1,15 @@
-module Lib.Common (safeTake, split, splitList, solve, uniq, parseMaybe, traverseBoth) where
+module Lib.Common (
+  safeTake,
+  safeLast,
+  split,
+  splitList,
+  solve,
+  uniq,
+  parseMaybe,
+  traverseBoth,
+  sequenceBoth,
+  filterMaybe
+) where
 
 import           Data.Attoparsec.Text (Parser)
 import qualified Data.Attoparsec.Text as P
@@ -26,6 +37,11 @@ safeTake 0 _           = Just []
 safeTake amount (x:xs) = (:) <$> Just x <*> safeTake (amount -1) xs
 safeTake _ []          = Nothing
 
+safeLast :: [a] -> Maybe a
+safeLast []     = Nothing
+safeLast [x]    = Just x
+safeLast (_:xs) = Just $ last xs
+
 -- Repeatedly splits a list by the provided separator and collects the results
 splitList :: Eq a => a -> [a] -> [[a]]
 splitList _ [] = []
@@ -48,3 +64,11 @@ parseMaybe parser = P.maybeResult . P.parse parser
 
 traverseBoth :: Applicative f => (a -> f b) -> (a, a) -> f (b, b)
 traverseBoth f (x, y) = (,) <$> f x <*> f y
+
+sequenceBoth :: Applicative f => (f a, f b) -> f (a, b)
+sequenceBoth (x, y) = (,) <$> x <*> y
+
+filterMaybe :: [Maybe a] -> [a]
+filterMaybe = foldl (\list el -> case el of
+                           (Just x) -> list <> [x]
+                           Nothing  -> list) []
