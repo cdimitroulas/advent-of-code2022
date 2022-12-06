@@ -1,9 +1,6 @@
 module Solutions.Day6.Common where
 
-import           Data.List (nub)
-
-isUniqueList :: Eq a => [a] -> Bool
-isUniqueList list = nub list == list
+import           Lib.Common (isUniqueList)
 
 -- returns a tuple containing the chars + the index of the last char
 findFirstNUniqueElems :: (Eq a, Ord a) => Int -> [a] -> Maybe ([a], Int)

@@ -8,11 +8,13 @@ module Lib.Common (
   parseMaybe,
   traverseBoth,
   sequenceBoth,
-  filterMaybe
+  filterMaybe,
+  isUniqueList
 ) where
 
 import           Data.Attoparsec.Text (Parser)
 import qualified Data.Attoparsec.Text as P
+import           Data.List            (nub)
 import qualified Data.Map             as Map
 import           Data.Text            (Text)
 import qualified Data.Text            as T
@@ -72,3 +74,7 @@ filterMaybe :: [Maybe a] -> [a]
 filterMaybe = foldl (\list el -> case el of
                            (Just x) -> list <> [x]
                            Nothing  -> list) []
+
+isUniqueList :: Eq a => [a] -> Bool
+isUniqueList list = nub list == list
+
