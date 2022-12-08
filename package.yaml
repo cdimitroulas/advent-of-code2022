@@ -50,6 +50,7 @@ dependencies:
 - base >= 4.7 && < 5
 - containers
 - text
+- vector
 
 library:
   source-dirs: src

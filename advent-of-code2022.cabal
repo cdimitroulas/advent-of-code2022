@@ -25,6 +25,8 @@ data-files:
     data/day5.txt
     data/day6-example.txt
     data/day6.txt
+    data/day7-example.txt
+    data/day7.txt
 
 source-repository head
   type: git
@@ -33,6 +35,7 @@ source-repository head
 library
   exposed-modules:
       Lib.Common
+      Lib.Parsing
       Main
       Solutions.Day1.CalorieCounting
       Solutions.Day2.Common
@@ -50,6 +53,8 @@ library
       Solutions.Day6.Common
       Solutions.Day6.Part1
       Solutions.Day6.Part2
+      Solutions.Day7.Common
+      Solutions.Day7.Part1
   other-modules:
       Paths_advent_of_code2022
   hs-source-dirs:
@@ -81,4 +86,5 @@ library
     , base >=4.7 && <5
     , containers
     , text
+    , vector
   default-language: Haskell2010

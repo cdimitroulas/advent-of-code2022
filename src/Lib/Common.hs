@@ -1,5 +1,6 @@
 module Lib.Common (
   safeTake,
+  safeHead,
   safeLast,
   split,
   splitList,
@@ -38,6 +39,10 @@ safeTake :: Int -> [a] -> Maybe [a]
 safeTake 0 _           = Just []
 safeTake amount (x:xs) = (:) <$> Just x <*> safeTake (amount -1) xs
 safeTake _ []          = Nothing
+
+safeHead :: [a] -> Maybe a
+safeHead []    = Nothing
+safeHead (x:_) = Just x
 
 safeLast :: [a] -> Maybe a
 safeLast []     = Nothing
