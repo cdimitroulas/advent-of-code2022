@@ -2,6 +2,7 @@ module Lib.Common (
   safeTake,
   safeHead,
   safeLast,
+  safeTail,
   split,
   splitList,
   solve,
@@ -10,7 +11,9 @@ module Lib.Common (
   traverseBoth,
   sequenceBoth,
   filterMaybe,
-  isUniqueList
+  isUniqueList,
+  mapWithIndex,
+  setAt
 ) where
 
 import           Data.Attoparsec.Text (Parser)
@@ -49,6 +52,10 @@ safeLast []     = Nothing
 safeLast [x]    = Just x
 safeLast (_:xs) = Just $ last xs
 
+safeTail :: [a] -> [a]
+safeTail []     = []
+safeTail (_:xs) = xs
+
 -- Repeatedly splits a list by the provided separator and collects the results
 splitList :: Eq a => a -> [a] -> [[a]]
 splitList _ [] = []
@@ -83,3 +90,11 @@ filterMaybe = foldl (\list el -> case el of
 isUniqueList :: Eq a => [a] -> Bool
 isUniqueList list = nub list == list
 
+mapWithIndex :: (Int -> a -> b) -> [a] -> [b]
+mapWithIndex f = run 0
+  where
+    run _ []         = []
+    run index (x:xs) = f index x : run (index + 1) xs
+
+setAt :: (a -> a) -> Int -> [a] -> [a]
+setAt f pos = mapWithIndex (\index -> if index == pos then f else id)

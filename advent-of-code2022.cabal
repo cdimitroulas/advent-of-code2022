@@ -27,6 +27,8 @@ data-files:
     data/day6.txt
     data/day7-example.txt
     data/day7.txt
+    data/day8-example.txt
+    data/day8.txt
 
 source-repository head
   type: git
@@ -35,6 +37,7 @@ source-repository head
 library
   exposed-modules:
       Lib.Common
+      Lib.Matrix
       Lib.Parsing
       Main
       Solutions.Day1.CalorieCounting
@@ -54,6 +57,7 @@ library
       Solutions.Day6.Part1
       Solutions.Day6.Part2
       Solutions.Day7.Part1
+      Solutions.Day8.Part1
   other-modules:
       Paths_advent_of_code2022
   hs-source-dirs:
