@@ -53,7 +53,6 @@ library
       Solutions.Day6.Common
       Solutions.Day6.Part1
       Solutions.Day6.Part2
-      Solutions.Day7.Common
       Solutions.Day7.Part1
   other-modules:
       Paths_advent_of_code2022
