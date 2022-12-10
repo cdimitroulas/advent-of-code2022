@@ -23,8 +23,10 @@ default-extensions:
   - LambdaCase
   - MultiParamTypeClasses
   - NamedFieldPuns
+  - NumericUnderscores
   - RankNTypes
   - RecordWildCards
+  - OverloadedRecordDot
   - OverloadedStrings
   - ScopedTypeVariables
   - TupleSections

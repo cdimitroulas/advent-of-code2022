@@ -69,9 +69,9 @@ split f s = (left, right)
     (left, right') = break f s
     right = if null right' then [] else tail right'
 
-
-uniq :: Ord a => Eq a => [a] -> [a]
-uniq = map fst . Map.toList . Map.fromList . map (, Nothing)
+-- alias for nub because I'll never remember that function
+uniq :: Eq a => [a] -> [a]
+uniq = nub
 
 parseMaybe :: Parser a -> Text -> Maybe a
 parseMaybe parser = P.maybeResult . P.parse parser

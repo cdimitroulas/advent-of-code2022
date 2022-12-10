@@ -5,7 +5,7 @@ import           Control.Monad
 import           Data.Attoparsec.Text (IResult (Done, Fail), Parser)
 import qualified Data.Attoparsec.Text as P
 import           Data.Char            (digitToInt, isSpace)
-import           Data.Either          (isRight)
+import           Data.Either          (rights)
 import           Data.Map             (Map)
 import qualified Data.Map             as M
 import           Data.Text            (Text)
@@ -70,9 +70,7 @@ parseCrateSection txt = toStacks 0 M.empty $ map parseCrateLine (init crateLines
     toStack :: Int -> [[Either String (Maybe Crate)]] -> Stack
     toStack colNum =
       filterMaybe
-      . map (\(Right crate) -> crate)
-      -- filter out any empty values, leaving us with the crate characters
-      . filter isRight
+      . rights
       -- Take the nth value from each row, which is equivalent to getting a column/stack
       . map (!! colNum)
 
@@ -87,8 +85,10 @@ parseCrateSection txt = toStacks 0 M.empty $ map parseCrateLine (init crateLines
 
 parser :: Text -> Either String (Map Int Stack, [Instruction])
 parser =
-    (\(crateStr:instructionStr:_) ->
-        combine (parseInstructions instructionStr) (parseCrateSection crateStr))
+    (\case {
+        (crateStr:instructionStr:_) ->
+          combine (parseInstructions instructionStr) (parseCrateSection crateStr);
+           _ -> error "the input did not contain a \n\n splitting point" })
     . T.splitOn "\n\n"
   where
     parseInstructions = mapM (P.parseOnly instructionParser) . T.lines
