@@ -2,15 +2,17 @@ module Solutions.Day9 where
 import           Control.Applicative
 import           Data.Attoparsec.Text (Parser)
 import qualified Data.Attoparsec.Text as P
+import           Data.List            (foldl')
 import           Data.Text            (Text)
 import qualified Data.Text.IO         as TIO
+import           Debug.Trace          (traceShow, traceShowId)
 import           Lib.Common           (uniq)
 
 data Direction = UpDir | DownDir | LeftDir | RightDir deriving (Show, Eq)
 
 data Position = Position { posX :: Int, posY :: Int } deriving (Show, Eq)
 
-data Rope = Rope { tailPos :: Position, headPos :: Position } deriving (Show)
+type Rope = [Position]
 
 parseInstructions :: Text -> Either String [Direction]
 parseInstructions = P.parseOnly $ concat <$> (instructionParser `P.sepBy` P.endOfLine)
@@ -45,35 +47,47 @@ move pos direction
   | otherwise = pos { posX = pos.posX + 1 }
 
 handleInstruction :: Direction -> Rope -> Rope
-handleInstruction direction Rope{..} =
-  Rope { tailPos = newTailPos, headPos = newHeadPos }
+handleInstruction _ [] = []
+handleInstruction _ [x] = [x]
+handleInstruction direction (headPos : (tailPos:restOfRope)) =
+  newHeadPos : reverse (foldl'
+                  (\rope nextKnot -> calcTailPos (head rope) nextKnot : rope)
+                  [calcTailPos newHeadPos tailPos]
+                  restOfRope)
   where
     newHeadPos = move headPos direction
 
-    diffPos = positionDiff newHeadPos tailPos
-
-    newTailPos
-      | positionsAreTouching newHeadPos tailPos = tailPos
+    calcTailPos :: Position -> Position -> Position
+    calcTailPos headP tailP
+      | positionsAreTouching headP tailP = tailP
       | diffPos.posX == 0 =
-          tailPos {
-            posY = (if diffPos.posY > 0 then (+) else (-)) tailPos.posY 1
+          tailP {
+            posY = (if diffPos.posY > 0 then (+) else (-)) tailP.posY 1
           }
       | diffPos.posY == 0 =
-          tailPos {
-            posX = (if diffPos.posX > 0 then (+) else (-)) tailPos.posX 1
+          tailP {
+            posX = (if diffPos.posX > 0 then (+) else (-)) tailP.posX 1
           }
-      -- Case where they aren't in same row or column, and vertical diff is greater
+      -- Case where they aren't in same row or column
       | otherwise =
-          tailPos {
-            posX = (if diffPos.posX >= 0 then (+) else (-)) tailPos.posX 1,
-            posY = (if diffPos.posY >= 0 then (+) else (-)) tailPos.posY 1
+          tailP {
+            posX = (if diffPos.posX >= 0 then (+) else (-)) tailP.posX 1,
+            posY = (if diffPos.posY >= 0 then (+) else (-)) tailP.posY 1
           }
+        where
+          diffPos = positionDiff headP tailP
 
-initialRope :: Rope
-initialRope = Rope (Position 0 0) (Position 0 0)
+initialRope :: Int -> Rope
+initialRope numOfKnots = replicate numOfKnots (Position 0 0 )
 
-solve :: [Direction] -> Int
-solve = length . uniq . map tailPos . snd . loop (initialRope, [])
+solve :: Int -> [Direction] -> Int
+solve numOfKnots =
+  length
+    . uniq
+    . map last
+    . traceShowId
+    . snd
+    . loop (initialRope numOfKnots, [])
   where
     loop :: (Rope, [Rope]) -> [Direction] -> (Rope, [Rope])
     loop (rope, ropes) [] = (rope, ropes)
@@ -85,5 +99,10 @@ solve = length . uniq . map tailPos . snd . loop (initialRope, [])
 solution_1 :: IO (Either String Int)
 solution_1 = do
   instructions <- parseInstructions <$> TIO.readFile "data/day9.txt"
-  return $ solve <$> instructions
+  return $ solve 2 <$> instructions
+
+solution_2 :: IO (Either String Int)
+solution_2 = do
+  instructions <- parseInstructions <$> TIO.readFile "data/day9.txt"
+  return $ solve 10 <$> instructions
 
