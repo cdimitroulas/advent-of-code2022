@@ -5,7 +5,6 @@ import qualified Data.Attoparsec.Text as P
 import           Data.List            (foldl')
 import           Data.Text            (Text)
 import qualified Data.Text.IO         as TIO
-import           Debug.Trace          (traceShow, traceShowId)
 import           Lib.Common           (uniq)
 
 data Direction = UpDir | DownDir | LeftDir | RightDir deriving (Show, Eq)
@@ -85,7 +84,6 @@ solve numOfKnots =
   length
     . uniq
     . map last
-    . traceShowId
     . snd
     . loop (initialRope numOfKnots, [])
   where
