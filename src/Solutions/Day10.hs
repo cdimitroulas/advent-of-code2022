@@ -4,6 +4,7 @@ import           Data.Attoparsec.Text (Parser)
 import qualified Data.Attoparsec.Text as P
 import           Data.Text            (Text)
 import qualified Data.Text.IO         as TIO
+import           Debug.Trace          (traceShowId)
 import           Lib.Parsing          (linesOf)
 
 data Instruction = AddX !Int | NoOp deriving (Show)
@@ -49,3 +50,22 @@ solution_1 = do
         map
           (\cycleNum -> (cycleNum + 1) * (regVals !! cycleNum))
           (map (subtract 1) importantCycles)
+
+-- Draws the pixels
+-- Accepts the starting position of the sprite as an argument
+draw :: Int -> [Int] -> String
+draw _ [] = []
+draw currentPos (regVal:rest) = pixelStr <> draw (currentPos + 1) rest
+  where
+    horizontalPos = currentPos `mod` 40
+    pixel = if horizontalPos `elem` [regVal - 1, regVal, regVal + 1] then '#' else '.'
+    isEndOfLine = horizontalPos == 39
+    pixelStr = if isEndOfLine then pixel : "\n" else [pixel]
+
+solution_2 :: IO ()
+solution_2 = do
+  instructions <- parseInstructions <$> TIO.readFile "data/day10.txt"
+  case instructions of
+    Right x -> putStr $ draw 0 $ getRegisterValues x
+    Left e  -> print e
+
