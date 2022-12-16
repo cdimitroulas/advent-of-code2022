@@ -1,8 +1,8 @@
-module Solutions.Day4.Part1 where
+module Solutions.Day04.Part1 where
 
-import           Data.List             (isInfixOf)
-import           Lib.Common            (solve)
-import           Solutions.Day4.Common (Range, parseLines)
+import           Data.List              (isInfixOf)
+import           Lib.Common             (solve)
+import           Solutions.Day04.Common (Range, parseLines)
 
 rangeIsContained :: (Range, Range) -> Bool
 rangeIsContained ((xStart, xEnd), (yStart, yEnd)) =

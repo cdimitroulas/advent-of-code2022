@@ -1,8 +1,8 @@
-module Solutions.Day4.Part2 where
+module Solutions.Day04.Part2 where
 
-import           Data.List             (intersect)
-import           Lib.Common            (solve)
-import           Solutions.Day4.Common (Range, parseLines)
+import           Data.List              (intersect)
+import           Lib.Common             (solve)
+import           Solutions.Day04.Common (Range, parseLines)
 
 rangesOverlap :: (Range, Range) -> Bool
 rangesOverlap ((xStart, xEnd), (yStart, yEnd)) =

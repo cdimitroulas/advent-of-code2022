@@ -1,9 +1,9 @@
-module Solutions.Day5.Part1 where
+module Solutions.Day05.Part1 where
 
-import           Data.Map              (Map)
-import qualified Data.Map              as M
-import qualified Data.Text.IO          as TIO
-import           Solutions.Day5.Common
+import           Data.Map               (Map)
+import qualified Data.Map               as M
+import qualified Data.Text.IO           as TIO
+import           Solutions.Day05.Common
 
 popFromStack :: Stack -> (Maybe Crate, Stack)
 popFromStack (crate:newStack) = (Just crate, newStack)

@@ -1,8 +1,8 @@
-module Solutions.Day3.Part1 (solution_1) where
+module Solutions.Day03.Part1 (solution_1) where
 
-import           Lib.Common            (solve)
-import           Solutions.Day3.Common (Backpack, BackpackItem, findCommonElem,
-                                        getItemPriority, parseBackpack)
+import           Lib.Common             (solve)
+import           Solutions.Day03.Common (Backpack, BackpackItem, findCommonElem, getItemPriority,
+                                         parseBackpack)
 
 findItemTypeInBothCompartments :: Backpack -> BackpackItem
 findItemTypeInBothCompartments (firstCompItems, sndCompItems) =

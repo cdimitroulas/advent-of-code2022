@@ -1,4 +1,4 @@
-module Solutions.Day5.Common where
+module Solutions.Day05.Common where
 
 import           Control.Applicative  ((<|>))
 import           Control.Monad

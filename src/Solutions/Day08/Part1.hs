@@ -1,4 +1,4 @@
-module Solutions.Day8.Part1 where
+module Solutions.Day08.Part1 where
 
 import           Data.Attoparsec.Text (Parser)
 import qualified Data.Attoparsec.Text as P

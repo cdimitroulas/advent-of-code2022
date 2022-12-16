@@ -1,11 +1,11 @@
-module Solutions.Day3.Part2 (solution_2) where
+module Solutions.Day03.Part2 (solution_2) where
 
-import           Data.Map              (Map)
-import qualified Data.Map              as Map
-import           Data.Text             (Text)
-import qualified Data.Text             as T
-import           Lib.Common            (solve, uniq)
-import           Solutions.Day3.Common (BackpackItem, getItemPriority)
+import           Data.Map               (Map)
+import qualified Data.Map               as Map
+import           Data.Text              (Text)
+import qualified Data.Text              as T
+import           Lib.Common             (solve, uniq)
+import           Solutions.Day03.Common (BackpackItem, getItemPriority)
 
 -- Splits a list into a list of 3-length tuples. Errors if the list isn't divisible by 3
 makeGroups :: [a] -> [(a, a, a)]

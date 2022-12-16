@@ -1,4 +1,4 @@
-module Solutions.Day3.Common (
+module Solutions.Day03.Common (
   BackpackItem, Backpack
     , parseBackpack, getItemPriority, findCommonElem) where
 

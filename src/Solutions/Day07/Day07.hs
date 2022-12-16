@@ -1,4 +1,4 @@
-module Solutions.Day7.Day7 where
+module Solutions.Day07.Day07 where
 
 import           Control.Applicative
 import           Control.Monad        (void)

@@ -1,8 +1,8 @@
-module Solutions.Day6.Part1 where
+module Solutions.Day06.Part1 where
 
-import qualified Data.Text             as T
-import qualified Data.Text.IO          as TIO
-import           Solutions.Day6.Common
+import qualified Data.Text              as T
+import qualified Data.Text.IO           as TIO
+import           Solutions.Day06.Common
 
 solution_1 :: IO ()
 solution_1 = do

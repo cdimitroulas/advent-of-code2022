@@ -1,11 +1,10 @@
-module Solutions.Day2.Part2 (solution_2) where
+module Solutions.Day02.Part2 (solution_2) where
 
-import qualified Data.Attoparsec.Text  as Parser
-import           Data.Text             (Text)
-import           Lib.Common            (solve)
-import           Solutions.Day2.Common (GameChoice, GameResult (..),
-                                        choiceScore, lineParser, parseChoice,
-                                        parseResult, resultScore, winningChoice)
+import qualified Data.Attoparsec.Text   as Parser
+import           Data.Text              (Text)
+import           Lib.Common             (solve)
+import           Solutions.Day02.Common (GameChoice, GameResult (..), choiceScore, lineParser,
+                                         parseChoice, parseResult, resultScore, winningChoice)
 
 data GameStrategy = GameStrategy { opponentChoice :: GameChoice, desiredResult :: GameResult }
 

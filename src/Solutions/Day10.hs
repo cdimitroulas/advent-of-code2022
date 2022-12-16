@@ -4,7 +4,6 @@ import           Data.Attoparsec.Text (Parser)
 import qualified Data.Attoparsec.Text as P
 import           Data.Text            (Text)
 import qualified Data.Text.IO         as TIO
-import           Debug.Trace          (traceShowId)
 import           Lib.Parsing          (linesOf)
 
 data Instruction = AddX !Int | NoOp deriving (Show)

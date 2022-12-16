@@ -1,4 +1,4 @@
-module Solutions.Day1.CalorieCounting where
+module Solutions.Day01.CalorieCounting where
 
 import           Data.List  (sort)
 import           Data.Text  (Text)

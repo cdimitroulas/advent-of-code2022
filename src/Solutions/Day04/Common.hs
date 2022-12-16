@@ -1,4 +1,4 @@
-module Solutions.Day4.Common where
+module Solutions.Day04.Common where
 
 import           Control.Monad        ((>=>))
 import           Data.Attoparsec.Text (Parser)

@@ -1,6 +1,6 @@
 module Main (main) where
 
-import           Solutions.Day1.CalorieCounting ()
+import           Solutions.Day01.CalorieCounting ()
 
 main :: IO ()
 main = do

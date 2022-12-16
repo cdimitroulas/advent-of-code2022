@@ -1,4 +1,4 @@
-module Solutions.Day6.Common where
+module Solutions.Day06.Common where
 
 import           Lib.Common (isUniqueList)
 
