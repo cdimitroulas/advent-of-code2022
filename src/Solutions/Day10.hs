@@ -47,5 +47,5 @@ solution_1 = do
     solve regVals =
       sum $
         map
-          (\cycle -> (cycle + 1) * (regVals !! cycle))
+          (\cycleNum -> (cycleNum + 1) * (regVals !! cycleNum))
           (map (subtract 1) importantCycles)
