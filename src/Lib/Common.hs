@@ -13,13 +13,13 @@ module Lib.Common (
   filterMaybe,
   isUniqueList,
   mapWithIndex,
-  setAt
+  setAt,
+  (!!?)
 ) where
 
 import           Data.Attoparsec.Text (Parser)
 import qualified Data.Attoparsec.Text as P
 import           Data.List            (nub)
-import qualified Data.Map             as Map
 import           Data.Text            (Text)
 import qualified Data.Text            as T
 import qualified Data.Text.IO         as TIO
@@ -55,6 +55,18 @@ safeLast (_:xs) = Just $ last xs
 safeTail :: [a] -> [a]
 safeTail []     = []
 safeTail (_:xs) = xs
+
+-- safe version of !! stolen from Relude
+infix 9 !!?
+(!!?) :: [a] -> Int -> Maybe a
+(!!?) xs i
+    | i < 0     = Nothing
+    | otherwise = go i xs
+  where
+    go :: Int -> [a] -> Maybe a
+    go 0 (x:_)  = Just x
+    go j (_:ys) = go (j - 1) ys
+    go _ []     = Nothing
 
 -- Repeatedly splits a list by the provided separator and collects the results
 splitList :: Eq a => a -> [a] -> [[a]]

@@ -11,3 +11,6 @@ skipRestOfLine = P.skipWhile (not . P.isEndOfLine) >> (P.endOfLine <|> P.endOfIn
 
 word :: Parser Text
 word = P.takeWhile (not . isSpace)
+
+linesOf :: Parser a -> Parser [a]
+linesOf parser = parser `P.sepBy` P.endOfLine
