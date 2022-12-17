@@ -24,14 +24,6 @@ import           Data.Text            (Text)
 import qualified Data.Text            as T
 import qualified Data.Text.IO         as TIO
 
--- TODO: Come up with a generic "solver" function which reads a file, parses the input and then
--- calculates the solution.
-
-type Filepath = Text
-
--- parseFileLines :: (String -> Maybe a) -> Filepath -> IO (Maybe [a])
--- parseFileLines parse filepath = T.mapM parse . T.lines <$> readFile filepath
-
 solve :: Monad m => FilePath -- path to the input data
     -> ([Text] -> m a) -- Parser
     -> (a -> b) -- Solver

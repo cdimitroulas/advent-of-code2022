@@ -2,6 +2,7 @@ module Lib.Matrix
   ( Matrix,
     size,
     getCol,
+    getRow,
     invert,
     prettyPrint,
     updateRow,
@@ -20,7 +21,11 @@ import           Lib.Common (setAt)
 -- TODO use a newtype plus specific constructor function to enforce this constraint.
 type Matrix a = [[a]]
 
-data Position = Position {posX :: Int, posY :: Int} deriving (Eq, Show)
+data Position = Position
+                  { posX :: Int
+                  , posY :: Int
+                  }
+  deriving (Eq, Show)
 
 size :: Matrix a -> Int
 size = length

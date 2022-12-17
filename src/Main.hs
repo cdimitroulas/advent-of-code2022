@@ -1,7 +1,7 @@
 module Main (main) where
 
-import           Solutions.Day01.CalorieCounting ()
+import           Solutions.Day11 (solution_2)
 
 main :: IO ()
 main = do
-  putStrLn "hello world"
+  solution_2
