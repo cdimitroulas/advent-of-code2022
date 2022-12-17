@@ -129,6 +129,8 @@ solve1 = product . map itemCounts . take 2 . sortBy (flip monkeyOrdering)
 solve2 :: Monkeys -> Integer
 solve2 ms = product . map itemCounts . take 2 . sortBy (flip monkeyOrdering)
   . M.elems
+  -- This uses the "Chinese remainder theorem"
+  -- https://en.wikipedia.org/wiki/Chinese_remainder_theorem
   . runRounds 10_000 1 (\m item -> m.operation item `mod` commonMultiple)
   $ ms
       where
