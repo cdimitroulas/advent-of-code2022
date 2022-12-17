@@ -10,6 +10,7 @@ import           Data.Map             (Map)
 import qualified Data.Map             as M
 import           Data.Text            (Text)
 import qualified Data.Text.IO         as TIO
+import           Lib.Common           (nTimes)
 import           Text.Show.Functions  ()
 
 data Operand = Old | Operand Integer
@@ -21,23 +22,29 @@ opToVal Old x         = x
 newtype MonkeyId = MonkeyId Integer deriving (Show, Eq, Ord)
 
 data Monkey = Monkey
-                { monkeyId    :: !MonkeyId
-                , items       :: ![Integer]
-                , operation   :: !(Integer -> Integer)
-                , divisor     :: !Integer
-                , trueTarget  :: !MonkeyId
-                , falseTarget :: !MonkeyId
-                , itemCounts  :: !Integer
+                { monkeyId      :: !MonkeyId
+                , startingItems :: ![Integer]
+                , operation     :: !(Integer -> Integer)
+                , divisor       :: !Integer
+                , trueTarget    :: !MonkeyId
+                , falseTarget   :: !MonkeyId
                 }
   deriving (Show)
 
-instance Eq Monkey where
-  (==) a b = a.monkeyId == b.monkeyId
+type Monkeys = [Monkey]
 
-instance Ord Monkey where
-  (<=) a b = a.monkeyId <= b.monkeyId
+data MonkeyState = MonkeyState
+                     { items      :: ![Integer]
+                     , itemCounts :: !Integer
+                     }
 
-type Monkeys = Map MonkeyId Monkey
+instance Eq MonkeyState where
+  (==) a b = a.itemCounts == b.itemCounts
+
+instance Ord MonkeyState where
+  (<=) a b = a.itemCounts <= b.itemCounts
+
+type MonkeyStates = Map MonkeyId MonkeyState
 
 monkeyParser :: Parser Monkey
 monkeyParser = do
@@ -51,12 +58,11 @@ monkeyParser = do
 
   return $ Monkey {
     monkeyId = MonkeyId monkeyId,
-    items = items,
+    startingItems = items,
     operation = operation,
     divisor = divisor,
     trueTarget = MonkeyId trueMonkeyId,
-    falseTarget = MonkeyId falseMonkeyId,
-    itemCounts = 0
+    falseTarget = MonkeyId falseMonkeyId
   }
 
   where
@@ -73,18 +79,16 @@ monkeyParser = do
       return (\x -> opToVal operand1 x `operator` opToVal operand2 x)
 
 parse :: Text -> Either String Monkeys
-parse = fmap toMap . P.parseOnly (P.many1 monkeyParser)
-  where
-    toMap = M.fromList . map (\x -> (x.monkeyId, x))
+parse = P.parseOnly (P.many1 monkeyParser)
 
 -- TODO: it would be nice to use Reader to thread the worryLevel function through
-runMonkey :: (Monkey -> Integer -> Integer) -> MonkeyId -> Monkeys -> Monkeys
-runMonkey worryLevel mId monkeys = (updateMonkeyReceivers . updateMonkey) monkeys
+runMonkey :: (Monkey -> Integer -> Integer) -> Monkey -> MonkeyStates -> MonkeyStates
+runMonkey worryLevel monkey mStates = (updateMonkeyReceivers . updateMonkey) mStates
   where
-    monkey = monkeys M.! mId
+    monkeyState = mStates M.! monkey.monkeyId
     targets = map
       (\item -> ((getTargetMonkey . worryLevel monkey) item, worryLevel monkey item))
-      monkey.items
+      monkeyState.items
 
     getTargetMonkey x = if x `mod` monkey.divisor == 0
                            then monkey.trueTarget
@@ -92,49 +96,56 @@ runMonkey worryLevel mId monkeys = (updateMonkeyReceivers . updateMonkey) monkey
 
     updateMonkey =
       M.insert
-        mId
-        (monkey { items = [], itemCounts = monkey.itemCounts + toInteger (length monkey.items) })
+        monkey.monkeyId
+        (monkeyState {
+          items = [],
+          itemCounts = monkeyState.itemCounts + toInteger (length monkeyState.items)
+        })
 
-    updateMonkeyReceivers :: Monkeys -> Monkeys
-    updateMonkeyReceivers _monkeys =
+    updateMonkeyReceivers :: MonkeyStates -> MonkeyStates
+    updateMonkeyReceivers _mStates =
       foldl'
         (\ms (targetId, itemsToGive) ->
             M.alter
               (\case
-                Just mkey -> Just mkey { items = mkey.items <> [itemsToGive] }
+                Just state -> Just state { items = state.items <> [itemsToGive] }
                 Nothing -> Nothing)
               targetId
               ms)
-        _monkeys
+        _mStates
         targets
 
-runRounds :: Integer -> Integer -> (Monkey -> Integer -> Integer) -> Monkeys -> Monkeys
-runRounds maxRound currentRound worryLevel monkeys
-  | maxRound + 1 == currentRound = monkeys
-  | otherwise = runRounds maxRound (currentRound + 1) worryLevel newMonkeys
-  where
-    newMonkeys = foldl' (flip (runMonkey worryLevel)) monkeys (M.keys monkeys)
+runRound :: (Monkey -> Integer -> Integer) -> Monkeys -> MonkeyStates -> MonkeyStates
+runRound worryLevel monkeys mStates = foldl' (flip (runMonkey worryLevel)) mStates monkeys
 
-monkeyOrdering :: Monkey -> Monkey -> Ordering
+monkeyOrdering :: MonkeyState -> MonkeyState -> Ordering
 monkeyOrdering m1 m2
   | m1.itemCounts == m2.itemCounts = EQ
   | m1.itemCounts > m2.itemCounts = GT
   | otherwise = LT
 
+initialState :: Monkeys -> MonkeyStates
+initialState = M.fromList . map (\m -> (m.monkeyId, MonkeyState {items=m.startingItems, itemCounts=0}))
+
+monkeyBusinessLvl :: MonkeyStates -> Integer
+monkeyBusinessLvl = product . map itemCounts . take 2 . sortBy (flip monkeyOrdering) . M.elems
+
 solve1 :: Monkeys -> Integer
-solve1 = product . map itemCounts . take 2 . sortBy (flip monkeyOrdering)
-  . M.elems
-  . runRounds 20 1 (\m item -> m.operation item `div` 3)
+solve1 monkeys = monkeyBusinessLvl finalStates
+  where
+    finalStates =
+      nTimes 20 (runRound (\m item -> m.operation item `div` 3) monkeys) (initialState monkeys)
 
 solve2 :: Monkeys -> Integer
-solve2 ms = product . map itemCounts . take 2 . sortBy (flip monkeyOrdering)
-  . M.elems
-  -- This uses the "Chinese remainder theorem"
-  -- https://en.wikipedia.org/wiki/Chinese_remainder_theorem
-  . runRounds 10_000 1 (\m item -> m.operation item `mod` commonMultiple)
-  $ ms
+solve2 ms = monkeyBusinessLvl finalStates
+  where
+    finalStates =
+      nTimes
+        10_000
+        (runRound (\m item -> m.operation item `mod` commonMultiple) ms)
+        (initialState ms)
       where
-        commonMultiple = product . map (.divisor) $ M.elems ms
+        commonMultiple = product . map (.divisor) $ ms
 
 main :: IO ()
 main = do

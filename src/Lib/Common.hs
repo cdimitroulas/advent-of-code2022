@@ -14,6 +14,7 @@ module Lib.Common (
   isUniqueList,
   mapWithIndex,
   setAt,
+  nTimes,
   (!!?)
 ) where
 
@@ -102,3 +103,9 @@ mapWithIndex f = run 0
 
 setAt :: (a -> a) -> Int -> [a] -> [a]
 setAt f pos = mapWithIndex (\index -> if index == pos then f else id)
+
+nTimes :: Int -> (a -> a) -> a -> a
+nTimes n f = go n
+  where
+    go 0 = id
+    go i = f . go (i - 1)
