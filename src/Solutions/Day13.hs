@@ -6,7 +6,6 @@ import           Data.List            (intercalate)
 import           Data.Maybe           (catMaybes)
 import           Data.Text            (Text)
 import qualified Data.Text.IO         as TIO
-import           Debug.Trace          (traceShowId)
 import           Lib.Common           (mapWithIndex)
 
 data PacketData = PacketInt Int | PacketList [PacketData] deriving (Eq)
