@@ -47,6 +47,7 @@ source-repository head
 
 library
   exposed-modules:
+      Lib.AOC
       Lib.Common
       Lib.Grid
       Lib.Matrix
@@ -120,6 +121,7 @@ library
 executable advent-of-code2022
   main-is: Main.hs
   other-modules:
+      Lib.AOC
       Lib.Common
       Lib.Grid
       Lib.Matrix

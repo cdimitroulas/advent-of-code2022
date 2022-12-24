@@ -5,8 +5,8 @@ import qualified Data.Attoparsec.Text as P
 import           Data.List            (elemIndex, intercalate, sort)
 import           Data.Maybe           (catMaybes)
 import           Data.Text            (Text)
-import qualified Data.Text.IO         as TIO
-import           Lib.Common           (Solution (Solution), mapWithIndex, runSolution)
+import           Lib.AOC              (runSolution)
+import           Lib.Common           (mapWithIndex)
 
 data PacketData = PacketInt Int | PacketList [PacketData] deriving (Eq)
 
@@ -80,8 +80,5 @@ part2 packets = product $ findDividerIdxs $ sort (divider2 : divider6 : flattene
     divider6 = Packet [PacketList [PacketInt 6]]
     findDividerIdxs x = map (+1) $ catMaybes [elemIndex divider2 x, elemIndex divider6 x]
 
-solution :: Solution [(Packet, Packet)] Int
-solution = Solution parse part1 part2
-
 main :: IO ()
-main = runSolution "data/day13.txt" solution
+main = runSolution "13" parse part1 part2
