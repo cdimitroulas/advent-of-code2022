@@ -2,11 +2,11 @@ module Solutions.Day13 (main) where
 import           Control.Applicative  ((<|>))
 import           Data.Attoparsec.Text (Parser)
 import qualified Data.Attoparsec.Text as P
-import           Data.List            (intercalate)
+import           Data.List            (elemIndex, intercalate, sort)
 import           Data.Maybe           (catMaybes)
 import           Data.Text            (Text)
 import qualified Data.Text.IO         as TIO
-import           Lib.Common           (mapWithIndex)
+import           Lib.Common           (Solution (Solution), mapWithIndex, runSolution)
 
 data PacketData = PacketInt Int | PacketList [PacketData] deriving (Eq)
 
@@ -14,7 +14,10 @@ instance Show PacketData where
   show (PacketInt x)  = show x
   show (PacketList x) = "[" ++ intercalate "," (map show x) ++ "]"
 
-type Packet = [PacketData]
+newtype Packet = Packet { unpacket :: [PacketData] } deriving (Show, Eq)
+
+instance Ord Packet where
+  (<=) = curry pairIsInRightOrder
 
 parse :: Text -> Either String [(Packet, Packet)]
 parse = P.parseOnly $ pairParser `P.sepBy1` "\n\n"
@@ -22,9 +25,12 @@ parse = P.parseOnly $ pairParser `P.sepBy1` "\n\n"
     packetParser :: Parser Packet
     packetParser = do
       P.char '['
-      packetData <- (PacketInt <$> P.decimal <|> PacketList <$> packetParser) `P.sepBy` ","
+      packetData <- (
+        PacketInt <$> P.decimal
+        <|> PacketList . unpacket <$> packetParser
+                    ) `P.sepBy` ","
       P.char ']'
-      return packetData
+      return (Packet packetData)
 
     pairParser :: Parser (Packet, Packet)
     pairParser = do
@@ -54,20 +60,28 @@ comparePacketData (PacketList (_:_)) (PacketList [])= Just False
 comparePacketData (PacketList []) (PacketList [])= Nothing
 
 pairIsInRightOrder :: (Packet, Packet) -> Bool
-pairIsInRightOrder (p1:restOfP1, p2:restOfP2) =
+pairIsInRightOrder (Packet (p1:restOfP1), Packet (p2:restOfP2)) =
   case comparePacketData p1 p2 of
-    Nothing     -> pairIsInRightOrder (restOfP1, restOfP2)
+    Nothing     -> pairIsInRightOrder (Packet restOfP1, Packet restOfP2)
     Just result -> result
-pairIsInRightOrder ([], _) = True
-pairIsInRightOrder (_, []) = False
+pairIsInRightOrder (Packet [], _) = True
+pairIsInRightOrder (_, Packet []) = False
 
 part1 :: [(Packet, Packet)] -> Int
 part1 = sum . catMaybes . mapWithIndex pairOrder
   where
-    pairOrder idx pair = if pairIsInRightOrder pair then Just (idx + 1) else Nothing
+    pairOrder idx (packet1, packet2) = if packet1 < packet2 then Just (idx + 1) else Nothing
+
+part2 :: [(Packet, Packet)] -> Int
+part2 packets = product $ findDividerIdxs $ sort (divider2 : divider6 : flattenedPackets)
+  where
+    flattenedPackets = concatMap (\(p1, p2) -> [p1, p2]) packets
+    divider2 = Packet [PacketList [PacketInt 2]]
+    divider6 = Packet [PacketList [PacketInt 6]]
+    findDividerIdxs x = map (+1) $ catMaybes [elemIndex divider2 x, elemIndex divider6 x]
+
+solution :: Solution [(Packet, Packet)] Int
+solution = Solution parse part1 part2
 
 main :: IO ()
-main = do
-  input <- parse <$> TIO.readFile "data/day13.txt"
-  putStrLn "Part 1: "
-  print $ part1 <$> input
+main = runSolution "data/day13.txt" solution
