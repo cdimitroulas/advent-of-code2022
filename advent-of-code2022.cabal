@@ -38,6 +38,8 @@ data-files:
     data/day11.txt
     data/day12-example.txt
     data/day12.txt
+    data/day13-example.txt
+    data/day13.txt
 
 source-repository head
   type: git
@@ -73,6 +75,7 @@ library
       Solutions.Day10
       Solutions.Day11
       Solutions.Day12
+      Solutions.Day13
   other-modules:
       Paths_advent_of_code2022
   hs-source-dirs:
@@ -144,6 +147,7 @@ executable advent-of-code2022
       Solutions.Day10
       Solutions.Day11
       Solutions.Day12
+      Solutions.Day13
       Paths_advent_of_code2022
   hs-source-dirs:
       src
