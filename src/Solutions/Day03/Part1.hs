@@ -9,7 +9,7 @@ findItemTypeInBothCompartments (firstCompItems, sndCompItems) =
   findCommonElem firstCompItems sndCompItems
 
 solution_1 :: IO (Maybe Int)
-solution_1 = solve "data/day3.txt" (mapM $ Just . parseBackpack) solver
+solution_1 = solve "data/day03.txt" (mapM $ Just . parseBackpack) solver
   where
     solver = sum . map (getItemPriority . findItemTypeInBothCompartments)
 

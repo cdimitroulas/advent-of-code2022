@@ -44,7 +44,7 @@ traverseWithPos f mat = loop (Position 0 0)
 
 solution_1 :: IO (Either String Int)
 solution_1 = do
-  trees <- parse <$> TIO.readFile "data/day8.txt"
+  trees <- parse <$> TIO.readFile "data/day08.txt"
   return $ length . filter (== True) . traverseWithPos isVisibleTree <$> trees
 
 calcScenicScore :: Mat.Position -> Trees -> Int
@@ -63,5 +63,5 @@ calcScenicScore pos@Position{..} trees =
 
 solution_2 :: IO (Either String Int)
 solution_2 = do
-  trees <- parse <$> TIO.readFile "data/day8.txt"
+  trees <- parse <$> TIO.readFile "data/day08.txt"
   return $ maximum . traverseWithPos calcScenicScore <$> trees

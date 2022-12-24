@@ -10,7 +10,7 @@ rangesOverlap ((xStart, xEnd), (yStart, yEnd)) =
 
 solution_2 :: IO ()
 solution_2 = do
-  result <- solve "data/day4.txt" parseLines solver
+  result <- solve "data/day04.txt" parseLines solver
   print result
     where
       solver = length . filter rangesOverlap

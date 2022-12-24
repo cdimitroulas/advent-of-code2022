@@ -23,8 +23,8 @@ solver_2 :: [ElfInventory] -> Maybe Int
 solver_2 inventories = sum <$> (safeTake 3 . reverse . sort . map sum) inventories
 
 solution :: IO (Maybe Int)
-solution = solve "data/day1.txt" parser solver
+solution = solve "data/day01.txt" parser solver
 
 solution_2 :: IO (Maybe (Maybe Int))
-solution_2 = solve "data/day1.txt" parser solver_2
+solution_2 = solve "data/day01.txt" parser solver_2
 

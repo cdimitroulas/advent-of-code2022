@@ -13,7 +13,7 @@ rangeIsContained ((xStart, xEnd), (yStart, yEnd)) =
 
 solution_1 :: IO ()
 solution_1 = do
-  result <- solve "data/day4.txt" parseLines solver
+  result <- solve "data/day04.txt" parseLines solver
   print result
     where
       solver = length . filter rangeIsContained

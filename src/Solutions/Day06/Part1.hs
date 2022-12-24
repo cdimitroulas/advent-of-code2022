@@ -7,5 +7,5 @@ import           Solutions.Day06.Common
 solution_1 :: IO ()
 solution_1 = do
   -- assumes only one line of input
-  [txt] <- filter (/= "") . T.lines <$> TIO.readFile "data/day6.txt"
+  [txt] <- filter (/= "") . T.lines <$> TIO.readFile "data/day06.txt"
   print $ findFirstNUniqueElems 4 (T.unpack txt)

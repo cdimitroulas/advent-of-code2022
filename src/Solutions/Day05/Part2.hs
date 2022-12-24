@@ -29,7 +29,7 @@ solve (stacks, instructions) = getAnswer . runInstructions $ instructions
 
 solution_2 :: IO ()
 solution_2 = do
-  parseResult <- parser <$> TIO.readFile "data/day5.txt"
+  parseResult <- parser <$> TIO.readFile "data/day05.txt"
   case parseResult of
     Right x -> print $ solve x
     Left x  -> print x

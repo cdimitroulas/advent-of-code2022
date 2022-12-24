@@ -44,12 +44,12 @@ dirSize (FSFile size)         = size
 
 solution_1 :: IO (Either String Int)
 solution_1 = do
-  fileData <- P.parseOnly dirParser <$> TIO.readFile "data/day7.txt"
+  fileData <- P.parseOnly dirParser <$> TIO.readFile "data/day07.txt"
   return $ sum . filter (<= 100_000) . map dirSize . dirs <$> fileData
 
 solution_2 :: IO (Either String Int)
 solution_2 = do
-  fileData <- P.parseOnly dirParser <$> TIO.readFile "data/day7.txt"
+  fileData <- P.parseOnly dirParser <$> TIO.readFile "data/day07.txt"
   return $ do
     directories <- dirs <$> fileData
     let currentUnusedSpace = totalDiskSpace - dirSize (head directories)

@@ -6,7 +6,10 @@ import           Lib.Common             (solve)
 import           Solutions.Day02.Common (GameChoice, GameResult (..), choiceScore, lineParser,
                                          parseChoice, resultScore, winningChoice)
 
-data GameStrategy = GameStrategy { opponentChoice :: GameChoice, yourChoice :: GameChoice }
+data GameStrategy = GameStrategy
+                      { opponentChoice :: GameChoice
+                      , yourChoice     :: GameChoice
+                      }
 
 parseGameStrategy :: Text -> Maybe GameStrategy
 parseGameStrategy line = do
@@ -21,7 +24,7 @@ strategyResult GameStrategy{..}
   | otherwise = Lose
 
 solution_1 :: IO (Maybe Int)
-solution_1 = solve "data/day2.txt" parser (sum . map calcScore)
+solution_1 = solve "data/day02.txt" parser (sum . map calcScore)
   where
     parser = mapM parseGameStrategy
     calcScore strategy@GameStrategy{..} =

@@ -17,27 +17,27 @@ build-type:     Simple
 extra-source-files:
     README.md
 data-files:
-    data/day1.txt
+    data/day01.txt
+    data/day02.txt
+    data/day03.txt
+    data/day04.txt
+    data/day05-example.txt
+    data/day05.txt
+    data/day06-example.txt
+    data/day06.txt
+    data/day07-example.txt
+    data/day07.txt
+    data/day08-example.txt
+    data/day08.txt
+    data/day09-example.txt
+    data/day09-example2.txt
+    data/day09.txt
     data/day10-example.txt
     data/day10.txt
     data/day11-example.txt
     data/day11.txt
     data/day12-example.txt
     data/day12.txt
-    data/day2.txt
-    data/day3.txt
-    data/day4.txt
-    data/day5-example.txt
-    data/day5.txt
-    data/day6-example.txt
-    data/day6.txt
-    data/day7-example.txt
-    data/day7.txt
-    data/day8-example.txt
-    data/day8.txt
-    data/day9-example.txt
-    data/day9-example2.txt
-    data/day9.txt
 
 source-repository head
   type: git

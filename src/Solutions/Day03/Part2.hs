@@ -41,7 +41,7 @@ countUniqueItems m list = foldl adjustCount m (uniq list)
 
 solution_2 :: IO ()
 solution_2 = do
-  result <- solve "data/day3.txt" (Just . makeGroups) solver
+  result <- solve "data/day03.txt" (Just . makeGroups) solver
   print result
   where
     solver :: [(Text, Text, Text)] -> Int

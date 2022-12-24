@@ -9,7 +9,11 @@ import           Lib.Common           (uniq)
 
 data Direction = UpDir | DownDir | LeftDir | RightDir deriving (Show, Eq)
 
-data Position = Position { posX :: Int, posY :: Int } deriving (Show, Eq)
+data Position = Position
+                  { posX :: Int
+                  , posY :: Int
+                  }
+  deriving (Show, Eq)
 
 type Rope = [Position]
 
@@ -96,11 +100,11 @@ solve numOfKnots =
 
 solution_1 :: IO (Either String Int)
 solution_1 = do
-  instructions <- parseInstructions <$> TIO.readFile "data/day9.txt"
+  instructions <- parseInstructions <$> TIO.readFile "data/day09.txt"
   return $ solve 2 <$> instructions
 
 solution_2 :: IO (Either String Int)
 solution_2 = do
-  instructions <- parseInstructions <$> TIO.readFile "data/day9.txt"
+  instructions <- parseInstructions <$> TIO.readFile "data/day09.txt"
   return $ solve 10 <$> instructions
 
