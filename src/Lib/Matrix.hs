@@ -9,12 +9,15 @@ module Lib.Matrix
     updateCol,
     Position (..),
     findElemPosition,
-    getAt
+    getAt,
+    getAt',
+    positionIsValid,
+    adjacentPositions
   )
   where
 
 import           Data.List  (findIndex, foldl')
-import           Lib.Common (setAt)
+import           Lib.Common (setAt, (!!?))
 
 -- A matrix should technically have all rows as equal length but this isn't enforced
 -- atm.
@@ -25,7 +28,7 @@ data Position = Position
                   { posX :: Int
                   , posY :: Int
                   }
-  deriving (Eq, Show)
+  deriving (Eq, Show, Ord)
 
 size :: Matrix a -> Int
 size = length
@@ -65,6 +68,23 @@ findElemPosition f matrix = Position <$> xPosition <*> yPosition
 -- partial fn
 getAt :: Position -> Matrix a -> a
 getAt Position{..} mat = mat !! posY !! posX
+
+-- safe version of getAt
+getAt' :: Position -> Matrix a -> Maybe a
+getAt' Position{..} mat = (mat !!? posY) >>= (!!? posX)
+
+positionIsValid :: Matrix a -> Position -> Bool
+positionIsValid mat pos = case getAt' pos mat of
+                            Just _  -> True
+                            Nothing -> False
+
+adjacentPositions :: Position -> Matrix a -> [Position]
+adjacentPositions pos mat = filter (positionIsValid mat) [upPos, downPos, leftPos, rightPos]
+  where
+    upPos = pos{ posY = pos.posY - 1 }
+    downPos = pos{ posY = pos.posY + 1 }
+    leftPos = pos{ posX = pos.posX - 1 }
+    rightPos = pos{ posX = pos.posX + 1 }
 
 prettyPrint :: Show a => Matrix a -> String
 prettyPrint [] = ""

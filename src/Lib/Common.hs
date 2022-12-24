@@ -15,7 +15,11 @@ module Lib.Common (
   mapWithIndex,
   setAt,
   nTimes,
-  (!!?)
+  (!!?),
+  Solution(..),
+  runFirstPartSolution,
+  runFirstPartSolutionIO,
+  runSolution
 ) where
 
 import           Data.Attoparsec.Text (Parser)
@@ -24,6 +28,41 @@ import           Data.List            (nub)
 import           Data.Text            (Text)
 import qualified Data.Text            as T
 import qualified Data.Text.IO         as TIO
+
+data Solution input output = Solution
+                               { parse :: Text -> Either String input
+                               , part1 :: input -> output
+                               , part2 :: input -> output
+                               }
+
+runFirstPartSolution :: Show input => Show output => String -> Solution input output -> IO ()
+runFirstPartSolution inputDataPath Solution{..} = do
+  parsed <- parse <$> TIO.readFile inputDataPath
+  print parsed
+  putStrLn "Part 1:"
+  print $ part1 <$> parsed
+
+runFirstPartSolutionIO :: Show input => Show output =>
+  String
+  -> Solution input (IO output)
+  -> IO ()
+runFirstPartSolutionIO inputDataPath Solution{..} = do
+  parsed <- parse <$> TIO.readFile inputDataPath
+  print parsed
+  putStrLn "Part 1:"
+  let solutionE = fmap part1 parsed
+  solution <- (case solutionE of
+    Right x  -> x
+    Left err -> error err)
+  print solution
+
+runSolution :: Show output => String -> Solution input output -> IO ()
+runSolution inputDataPath Solution{..} = do
+  parsed <- parse <$> TIO.readFile inputDataPath
+  putStrLn "Part 1:"
+  print $ part1 <$> parsed
+  putStrLn "Part 2:"
+  print $ part2 <$> parsed
 
 solve :: Monad m => FilePath -- path to the input data
     -> ([Text] -> m a) -- Parser

@@ -22,6 +22,8 @@ data-files:
     data/day10.txt
     data/day11-example.txt
     data/day11.txt
+    data/day12-example.txt
+    data/day12.txt
     data/day2.txt
     data/day3.txt
     data/day4.txt
@@ -44,8 +46,10 @@ source-repository head
 library
   exposed-modules:
       Lib.Common
+      Lib.Grid
       Lib.Matrix
       Lib.Parsing
+      Lib.Search
       Main
       Solutions.Day01.CalorieCounting
       Solutions.Day02.Common
@@ -68,6 +72,7 @@ library
       Solutions.Day09
       Solutions.Day10
       Solutions.Day11
+      Solutions.Day12
   other-modules:
       Paths_advent_of_code2022
   hs-source-dirs:
@@ -97,10 +102,15 @@ library
       TypeOperators
   ghc-options: -Wall -Werror -Wcompat -Widentities -Wincomplete-uni-patterns -Wincomplete-record-updates -Wno-unused-top-binds -Wno-orphans
   build-depends:
-      attoparsec >=0.13
+      array
+    , attoparsec >=0.13
     , base >=4.7 && <5
     , containers
+    , hashable
+    , heap
+    , search-algorithms
     , text
+    , unordered-containers
     , vector
   default-language: Haskell2010
 
@@ -108,8 +118,10 @@ executable advent-of-code2022
   main-is: Main.hs
   other-modules:
       Lib.Common
+      Lib.Grid
       Lib.Matrix
       Lib.Parsing
+      Lib.Search
       Solutions.Day01.CalorieCounting
       Solutions.Day02.Common
       Solutions.Day02.Part1
@@ -131,6 +143,7 @@ executable advent-of-code2022
       Solutions.Day09
       Solutions.Day10
       Solutions.Day11
+      Solutions.Day12
       Paths_advent_of_code2022
   hs-source-dirs:
       src
@@ -159,9 +172,14 @@ executable advent-of-code2022
       TypeOperators
   ghc-options: -Wall -Werror -Wcompat -Widentities -Wincomplete-uni-patterns -Wincomplete-record-updates -Wno-unused-top-binds -Wno-orphans -threaded -rtsopts -with-rtsopts=-N -Wall
   build-depends:
-      attoparsec >=0.13
+      array
+    , attoparsec >=0.13
     , base >=4.7 && <5
     , containers
+    , hashable
+    , heap
+    , search-algorithms
     , text
+    , unordered-containers
     , vector
   default-language: Haskell2010
