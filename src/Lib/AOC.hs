@@ -4,10 +4,10 @@ import           Data.Text    (Text)
 import qualified Data.Text.IO as TIO
 
 runFirstPartSolution ::
-  Show input => Show output =>
+  Show input => Show output => Monad m => Show (m output) =>
     String
     -- ^ the day number as a string (e.g. "01" or "11")
-    -> (Text -> Either String input)
+    -> (Text -> m input)
     -- ^ parser
     -> (input -> output)
     -- ^ the part1 solver fn
@@ -18,10 +18,10 @@ runFirstPartSolution day parser solve = do
   print $ solve <$> parsed
 
 runSolution ::
-  Show output =>
+  Show input => Show output => Monad m => Show (m output) =>
   String
   -- ^ the day number as a string (e.g. "01" or "11")
-  -> (Text -> Either String input)
+  -> (Text -> m input)
   -- ^ parser
   -> (input -> output)
   -- ^ the part1 solver fn
